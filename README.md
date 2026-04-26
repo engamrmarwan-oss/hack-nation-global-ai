@@ -14,6 +14,7 @@
 | 📹 Product Demo Video | [Watch Demo](https://github.com/engamrmarwan-oss/hack-nation-global-ai/raw/main/Operon%20AI%20Demo.mp4) |
 | 🔬 Technical Walkthrough Video | [Watch Technical](https://github.com/engamrmarwan-oss/hack-nation-global-ai/raw/main/Operon%20AI%20Tech.mp4) |
 | 📊 Technical Presentation (Prezi) | [View Presentation](https://prezi.com/view/PvqXSgrfWil7iYr5TO0K/?referral_token=8VhIUmlnB3FN) |
+| 🌐 Live Demo | [Try it Live](https://hack-nation-global-ai-n6u3.vercel.app/experiments/new) |
 
 ---
 
