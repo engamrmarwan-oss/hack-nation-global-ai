@@ -34,7 +34,9 @@ See docs/demo-script.md for full walkthrough.
 ## Impact
 - Who benefits: [user group]
 - Scale potential: [realistic estimate]
-- If we had more time: [1-2 future features]
+- If we had more time:
+  - Expand Operon AI from a fixed staged pipeline into a bounded hybrid agent system, where the planner can use tools and revise drafts before handoff while keeping the external workflow deterministic.
+  - Add a later fully agentic mode with persistent tool traces, planner-critic revision loops, and deeper protocol/supplier verification for larger-scale deployments.
 
 ## Why We'll Win
 - [Reason 1 — technical strength]
@@ -59,7 +61,7 @@ A: [Answer]
 A: [Answer]
 
 **Q: What would you build next?**
-A: [Answer]
+A: First, we would add a bounded hybrid agent layer inside the planner so it can iteratively refine protocols and sourcing without breaking the current judge-friendly workflow. Longer term, we would scale that into a fully agentic planning system with persistent run memory, tool-call provenance, and planner-critic revision loops for more complex scientific programs.
 
 **Q: How long did this take?**
 A: Built solo in 24 hours using Codex + Claude.

@@ -24,6 +24,9 @@ yarn-error.log*
 dist/
 .next/
 .nuxt/
+dev.db
+dev.db-journal
+.turbo/
 
 # === Environment & Secrets ===
 .env
@@ -70,3 +73,4 @@ logs/
 .cache/
 tmp/
 temp/
+tsconfig.tsbuildinfo

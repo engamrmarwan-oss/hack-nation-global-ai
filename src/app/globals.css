@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+/* ─── Color primitives ───────────────────────────────────── */
+:root {
+  --navy-950: #050D1A;
+  --navy-900: #0D1B2E;
+  --navy-800: #112240;
+  --navy-700: #163354;
+  --navy-600: #1E4470;
+
+  --teal-700: #0A7A70;
+  --teal-600: #0D9488;
+  --teal-500: #14B8A6;
+  --teal-50:  #F0FDFA;
+
+  --slate-600: #64748B;
+  --slate-400: #CBD5E1;
+  --slate-300: #E2E8F0;
+  --slate-200: #EEF2F7;
+  --slate-100: #F1F5F9;
+  --slate-50:  #F8FAFC;
+
+  --off-white: #F7F6F2;
+
+  --signal-clear-700: #15803D;
+  --signal-clear-600: #16A34A;
+  --signal-clear-100: #DCFCE7;
+  --signal-clear-50:  #F0FDF4;
+
+  --signal-warn-700:  #92400E;
+  --signal-warn-600:  #B45309;
+  --signal-warn-100:  #FEF3C7;
+  --signal-warn-50:   #FFFBEB;
+
+  --signal-alert-700: #991B1B;
+  --signal-alert-600: #B91C1C;
+  --signal-alert-100: #FEE2E2;
+  --signal-alert-50:  #FFF5F5;
+
+  /* Semantic tokens */
+  --bg-page:        var(--off-white);
+  --bg-surface:     #FFFFFF;
+  --bg-surface-2:   var(--slate-50);
+  --fg-primary:     #111827;
+  --fg-secondary:   #4B5563;
+  --fg-muted:       var(--slate-600);
+  --fg-inverse:     #E8EDF4;
+  --border-default: var(--slate-300);
+  --accent:         var(--teal-600);
+  --accent-hover:   var(--teal-700);
+  --focus-ring:     var(--teal-500);
+  --focus-shadow:   0 0 0 3px rgba(13,148,136,0.25);
+
+  /* Typography */
+  --font-serif: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+  --font-sans:  'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:  'IBM Plex Mono', 'Fira Code', 'Courier New', monospace;
+
+  color-scheme: light;
+}
+
+@theme inline {
+  --font-serif: var(--font-serif);
+  --font-sans:  var(--font-sans);
+  --font-mono:  var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+button { cursor: pointer; }
+
+::selection {
+  background: rgba(13, 148, 136, 0.18);
+}
+
+.sidebar-cta {
+  background-color: #0D9488;
+}
+.sidebar-cta:hover {
+  background-color: #0A7A70;
+}

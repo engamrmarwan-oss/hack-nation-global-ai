@@ -1,0 +1,5 @@
+-- This migration is intentionally a no-op.
+--
+-- Operon AI's canonical initial migration now includes the timeline columns
+-- directly, so replaying this historical migration against a fresh or shadow
+-- database must not assume the earlier tables already exist.

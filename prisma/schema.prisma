@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Project {
+  id            String             @id @default(cuid())
+  name          String
+  description   String?
+  status        String             @default("draft")
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  questions     ResearchQuestion[]
+  previews      PlanPreview[]
+  plans         ExperimentPlan[]
+  evidenceItems EvidenceSource[]
+  planningRuns  PlanningRun[]
+  scientistReviews ScientistReview[]
+}
+
+model ResearchQuestion {
+  id                 String           @id @default(cuid())
+  title              String
+  question           String
+  objective          String?
+  assumptionsJson    String?
+  constraintsJson    String?
+  profileSummaryJson String?
+  literatureQcJson String?
+  status             String           @default("draft")
+  retrievalStatus    String           @default("idle")
+  previewStatus      String           @default("idle")
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  projectId          String
+  project            Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  evidenceItems      EvidenceSource[]
+  previews           PlanPreview[]
+  plans              ExperimentPlan[]
+  planningRuns       PlanningRun[]
+  scientistReviews   ScientistReview[]
+
+  @@index([projectId, createdAt])
+}
+
+model EvidenceSource {
+  id             String           @id @default(cuid())
+  title          String
+  url            String
+  snippet        String?
+  sourceType     String           @default("web")
+  provider       String           @default("tavily")
+  relevanceScore Float?
+  metadataJson   String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  projectId      String
+  project        Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  questionId     String
+  question       ResearchQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, createdAt])
+  @@index([questionId, createdAt])
+}
+
+model PlanPreview {
+  id                  String           @id @default(cuid())
+  title               String
+  status              String           @default("active")
+  reviewStatus        String           @default("pending")
+  summary             String?
+  objective           String?
+  hypothesis          String?
+  protocolJson        String
+  controlsJson        String
+  timelineJson        String           @default("[]")
+  materialsJson       String
+  budgetJson          String
+  staffingJson        String
+  risksJson           String
+  validationJson      String
+  failureModesJson    String           @default("[]")
+  evidenceSummaryJson String?
+  criticSummaryJson   String?
+  appliedFeedbackJson String           @default("[]")
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  appliedAt           DateTime?
+  projectId           String
+  project             Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  questionId          String
+  question            ResearchQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  planningRunId       String?
+  planningRun         PlanningRun?     @relation(fields: [planningRunId], references: [id], onDelete: SetNull)
+  promotedPlan        ExperimentPlan?
+  scientistReviews    ScientistReview[]
+
+  @@index([projectId, status, createdAt])
+  @@index([questionId, status, createdAt])
+}
+
+model ExperimentPlan {
+  id                  String           @id @default(cuid())
+  title               String
+  status              String           @default("active")
+  summary             String?
+  objective           String?
+  hypothesis          String?
+  protocolJson        String
+  controlsJson        String
+  timelineJson        String           @default("[]")
+  materialsJson       String
+  budgetJson          String
+  staffingJson        String
+  risksJson           String
+  validationJson      String
+  failureModesJson    String           @default("[]")
+  evidenceSummaryJson String?
+  archivedAt          DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  projectId           String
+  project             Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  questionId          String
+  question            ResearchQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  sourcePreviewId     String           @unique
+  sourcePreview       PlanPreview      @relation(fields: [sourcePreviewId], references: [id], onDelete: Restrict)
+
+  @@index([projectId, status, createdAt])
+  @@index([questionId, status, createdAt])
+}
+
+model PlanningRun {
+  id         String            @id @default(cuid())
+  mode       String
+  status     String            @default("queued")
+  stage      String            @default("queued")
+  stageDataJson String?
+  notes      String?
+  error      String?
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  projectId  String
+  project    Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  questionId String?
+  question   ResearchQuestion? @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  generatedPreviews PlanPreview[]
+
+  @@index([projectId, createdAt])
+  @@index([questionId, createdAt])
+}
+
+model ScientistReview {
+  id               String           @id @default(cuid())
+  domainHint       String?
+  experimentClass  String?
+  interventionText String?
+  endpointText     String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  projectId        String
+  project          Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         ResearchQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  previewId        String
+  preview          PlanPreview      @relation(fields: [previewId], references: [id], onDelete: Cascade)
+  corrections      ScientistCorrection[]
+
+  @@index([projectId, createdAt])
+  @@index([questionId, createdAt])
+  @@index([experimentClass, domainHint, createdAt])
+}
+
+model ScientistCorrection {
+  id            String          @id @default(cuid())
+  section       String
+  originalText  String
+  correctedText String
+  reason        String
+  rating        Int?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  reviewId      String
+  review        ScientistReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@index([reviewId, createdAt])
+  @@index([section, createdAt])
+}

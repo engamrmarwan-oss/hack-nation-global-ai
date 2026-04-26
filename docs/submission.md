@@ -51,7 +51,9 @@ Solo — [Your name / handle]
 [2-3 sentences about what was hard and what you learned. Judges like authenticity.]
 
 ## What's Next
-[2-3 bullet points of future work if this were a real product]
+- Add a bounded hybrid agent planner that can iterate on protocol design and sourcing internally while preserving the current staged workflow externally.
+- Introduce a fully agentic scaling path with persistent tool traces, planner-critic revision loops, and deeper protocol and supplier verification for more complex experiment classes.
+- Expand active-plan comparison, review, and apply flows so Operon AI supports longer-running scientific planning cycles beyond the hackathon MVP.
 
 ## Sponsor Prize Targeting
 | Sponsor Prize | Why We Qualify |
