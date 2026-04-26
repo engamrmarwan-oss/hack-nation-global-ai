@@ -35,6 +35,28 @@ function ReviewActionButton({
   );
 }
 
+function ChatBubbleIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      className="shrink-0"
+    >
+      <path
+        d="M3 3.75C3 2.78 3.78 2 4.75 2h6.5C12.22 2 13 2.78 13 3.75v4.5C13 9.22 12.22 10 11.25 10H7.2L4.7 12.05c-.57.47-1.4.06-1.4-.68V10.8C3.12 10.53 3 10.15 3 9.75v-6Z"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M5.4 5.5h5.2M5.4 7.3h3.4" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function ReviewChatBubble({ experimentId }: { experimentId: string }) {
   const [open, setOpen] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -158,13 +180,14 @@ export function ReviewChatBubble({ experimentId }: { experimentId: string }) {
             await ensureOpenSession();
           }
         }}
-        className="fixed left-4 bottom-4 z-30 px-4 py-2 rounded-full bg-[#0D1B2E] text-white text-sm font-mono shadow-lg hover:bg-[#112240] transition-colors"
+        className="fixed right-[120px] bottom-4 xl:right-[344px] z-30 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0D9488] text-white text-sm font-mono shadow-lg hover:bg-[#0F766E] transition-colors"
       >
-        {open ? "Close review" : "Review plan"}
+        <ChatBubbleIcon />
+        <span>{open ? "Close review" : "Review plan"}</span>
       </button>
 
       {open && (
-        <div className="fixed left-4 bottom-20 z-30 w-[min(92vw,420px)] bg-white border border-[#E2E8F0] rounded-2xl shadow-2xl overflow-hidden">
+        <div className="fixed right-4 bottom-20 xl:right-[344px] z-30 w-[min(92vw,420px)] bg-white border border-[#E2E8F0] rounded-2xl shadow-2xl overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#E2E8F0] bg-[#F8FAFC]">
             <div>
               <p className="text-sm font-semibold text-[#111827]">Scientist Review Chat</p>
