@@ -528,6 +528,7 @@ export type ScientistCorrectionCreateOrConnectWithoutReviewInput = {
 
 export type ScientistCorrectionCreateManyReviewInputEnvelope = {
   data: Prisma.ScientistCorrectionCreateManyReviewInput | Prisma.ScientistCorrectionCreateManyReviewInput[]
+  skipDuplicates?: boolean
 }
 
 export type ScientistCorrectionUpsertWithWhereUniqueWithoutReviewInput = {
@@ -1351,6 +1352,7 @@ export type ScientistCorrectionCreateManyArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many ScientistCorrections.
    */
   data: Prisma.ScientistCorrectionCreateManyInput | Prisma.ScientistCorrectionCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1369,6 +1371,7 @@ export type ScientistCorrectionCreateManyAndReturnArgs<ExtArgs extends runtime.T
    * The data used to create many ScientistCorrections.
    */
   data: Prisma.ScientistCorrectionCreateManyInput | Prisma.ScientistCorrectionCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

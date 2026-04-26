@@ -1003,6 +1003,7 @@ export type PlanPreviewCreateOrConnectWithoutProjectInput = {
 
 export type PlanPreviewCreateManyProjectInputEnvelope = {
   data: Prisma.PlanPreviewCreateManyProjectInput | Prisma.PlanPreviewCreateManyProjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type PlanPreviewUpsertWithWhereUniqueWithoutProjectInput = {
@@ -1117,6 +1118,7 @@ export type PlanPreviewCreateOrConnectWithoutQuestionInput = {
 
 export type PlanPreviewCreateManyQuestionInputEnvelope = {
   data: Prisma.PlanPreviewCreateManyQuestionInput | Prisma.PlanPreviewCreateManyQuestionInput[]
+  skipDuplicates?: boolean
 }
 
 export type PlanPreviewUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -1332,6 +1334,7 @@ export type PlanPreviewCreateOrConnectWithoutPlanningRunInput = {
 
 export type PlanPreviewCreateManyPlanningRunInputEnvelope = {
   data: Prisma.PlanPreviewCreateManyPlanningRunInput | Prisma.PlanPreviewCreateManyPlanningRunInput[]
+  skipDuplicates?: boolean
 }
 
 export type PlanPreviewUpsertWithWhereUniqueWithoutPlanningRunInput = {
@@ -2715,6 +2718,7 @@ export type PlanPreviewCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many PlanPreviews.
    */
   data: Prisma.PlanPreviewCreateManyInput | Prisma.PlanPreviewCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -2733,6 +2737,7 @@ export type PlanPreviewCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many PlanPreviews.
    */
   data: Prisma.PlanPreviewCreateManyInput | Prisma.PlanPreviewCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

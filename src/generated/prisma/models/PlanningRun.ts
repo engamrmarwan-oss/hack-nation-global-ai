@@ -646,6 +646,7 @@ export type PlanningRunCreateOrConnectWithoutProjectInput = {
 
 export type PlanningRunCreateManyProjectInputEnvelope = {
   data: Prisma.PlanningRunCreateManyProjectInput | Prisma.PlanningRunCreateManyProjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type PlanningRunUpsertWithWhereUniqueWithoutProjectInput = {
@@ -722,6 +723,7 @@ export type PlanningRunCreateOrConnectWithoutQuestionInput = {
 
 export type PlanningRunCreateManyQuestionInputEnvelope = {
   data: Prisma.PlanningRunCreateManyQuestionInput | Prisma.PlanningRunCreateManyQuestionInput[]
+  skipDuplicates?: boolean
 }
 
 export type PlanningRunUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -1757,6 +1759,7 @@ export type PlanningRunCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many PlanningRuns.
    */
   data: Prisma.PlanningRunCreateManyInput | Prisma.PlanningRunCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1775,6 +1778,7 @@ export type PlanningRunCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many PlanningRuns.
    */
   data: Prisma.PlanningRunCreateManyInput | Prisma.PlanningRunCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

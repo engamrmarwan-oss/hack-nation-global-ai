@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, IBM_Plex_Sans, Libre_Baskerville } from "next/font/googl
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
 import { TrustHelpRail } from "@/components/trust-help-rail";
+import { Analytics } from "@vercel/analytics/next";
 
 const sans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
             <TrustHelpRail />
           </div>
         </div>
+        <Analytics />
       </body>
     </html>
   );
