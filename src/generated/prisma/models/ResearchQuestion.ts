@@ -723,6 +723,7 @@ export type ResearchQuestionCreateOrConnectWithoutProjectInput = {
 
 export type ResearchQuestionCreateManyProjectInputEnvelope = {
   data: Prisma.ResearchQuestionCreateManyProjectInput | Prisma.ResearchQuestionCreateManyProjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type ResearchQuestionUpsertWithWhereUniqueWithoutProjectInput = {
@@ -2198,6 +2199,7 @@ export type ResearchQuestionCreateManyArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many ResearchQuestions.
    */
   data: Prisma.ResearchQuestionCreateManyInput | Prisma.ResearchQuestionCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -2216,6 +2218,7 @@ export type ResearchQuestionCreateManyAndReturnArgs<ExtArgs extends runtime.Type
    * The data used to create many ResearchQuestions.
    */
   data: Prisma.ResearchQuestionCreateManyInput | Prisma.ResearchQuestionCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

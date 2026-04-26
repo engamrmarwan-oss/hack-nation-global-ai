@@ -644,6 +644,7 @@ export type EvidenceSourceCreateOrConnectWithoutProjectInput = {
 
 export type EvidenceSourceCreateManyProjectInputEnvelope = {
   data: Prisma.EvidenceSourceCreateManyProjectInput | Prisma.EvidenceSourceCreateManyProjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type EvidenceSourceUpsertWithWhereUniqueWithoutProjectInput = {
@@ -715,6 +716,7 @@ export type EvidenceSourceCreateOrConnectWithoutQuestionInput = {
 
 export type EvidenceSourceCreateManyQuestionInputEnvelope = {
   data: Prisma.EvidenceSourceCreateManyQuestionInput | Prisma.EvidenceSourceCreateManyQuestionInput[]
+  skipDuplicates?: boolean
 }
 
 export type EvidenceSourceUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -1617,6 +1619,7 @@ export type EvidenceSourceCreateManyArgs<ExtArgs extends runtime.Types.Extension
    * The data used to create many EvidenceSources.
    */
   data: Prisma.EvidenceSourceCreateManyInput | Prisma.EvidenceSourceCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1635,6 +1638,7 @@ export type EvidenceSourceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
    * The data used to create many EvidenceSources.
    */
   data: Prisma.EvidenceSourceCreateManyInput | Prisma.EvidenceSourceCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

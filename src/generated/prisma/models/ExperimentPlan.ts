@@ -871,6 +871,7 @@ export type ExperimentPlanCreateOrConnectWithoutProjectInput = {
 
 export type ExperimentPlanCreateManyProjectInputEnvelope = {
   data: Prisma.ExperimentPlanCreateManyProjectInput | Prisma.ExperimentPlanCreateManyProjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type ExperimentPlanUpsertWithWhereUniqueWithoutProjectInput = {
@@ -972,6 +973,7 @@ export type ExperimentPlanCreateOrConnectWithoutQuestionInput = {
 
 export type ExperimentPlanCreateManyQuestionInputEnvelope = {
   data: Prisma.ExperimentPlanCreateManyQuestionInput | Prisma.ExperimentPlanCreateManyQuestionInput[]
+  skipDuplicates?: boolean
 }
 
 export type ExperimentPlanUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -2134,6 +2136,7 @@ export type ExperimentPlanCreateManyArgs<ExtArgs extends runtime.Types.Extension
    * The data used to create many ExperimentPlans.
    */
   data: Prisma.ExperimentPlanCreateManyInput | Prisma.ExperimentPlanCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -2152,6 +2155,7 @@ export type ExperimentPlanCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
    * The data used to create many ExperimentPlans.
    */
   data: Prisma.ExperimentPlanCreateManyInput | Prisma.ExperimentPlanCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
