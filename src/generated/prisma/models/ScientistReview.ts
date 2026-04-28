@@ -616,6 +616,7 @@ export type ScientistReviewCreateOrConnectWithoutProjectInput = {
 
 export type ScientistReviewCreateManyProjectInputEnvelope = {
   data: Prisma.ScientistReviewCreateManyProjectInput | Prisma.ScientistReviewCreateManyProjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type ScientistReviewUpsertWithWhereUniqueWithoutProjectInput = {
@@ -683,6 +684,7 @@ export type ScientistReviewCreateOrConnectWithoutQuestionInput = {
 
 export type ScientistReviewCreateManyQuestionInputEnvelope = {
   data: Prisma.ScientistReviewCreateManyQuestionInput | Prisma.ScientistReviewCreateManyQuestionInput[]
+  skipDuplicates?: boolean
 }
 
 export type ScientistReviewUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -734,6 +736,7 @@ export type ScientistReviewCreateOrConnectWithoutPreviewInput = {
 
 export type ScientistReviewCreateManyPreviewInputEnvelope = {
   data: Prisma.ScientistReviewCreateManyPreviewInput | Prisma.ScientistReviewCreateManyPreviewInput[]
+  skipDuplicates?: boolean
 }
 
 export type ScientistReviewUpsertWithWhereUniqueWithoutPreviewInput = {
@@ -1773,6 +1776,7 @@ export type ScientistReviewCreateManyArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many ScientistReviews.
    */
   data: Prisma.ScientistReviewCreateManyInput | Prisma.ScientistReviewCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1791,6 +1795,7 @@ export type ScientistReviewCreateManyAndReturnArgs<ExtArgs extends runtime.Types
    * The data used to create many ScientistReviews.
    */
   data: Prisma.ScientistReviewCreateManyInput | Prisma.ScientistReviewCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

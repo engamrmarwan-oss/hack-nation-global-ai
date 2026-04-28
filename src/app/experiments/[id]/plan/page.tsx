@@ -13,6 +13,7 @@ import { SourcesTab } from "@/components/tabs/sources-tab";
 import { TimelineTab } from "@/components/tabs/timeline-tab";
 import { ValidationTab } from "@/components/tabs/validation-tab";
 import { getNoveltyProvenance, getStatusMeaning } from "@/lib/help-content";
+import { buildPlanExportFilename, buildPlanExportMarkdown } from "@/lib/plan-export";
 import type { ExperimentDetailResponse, ExperimentPlan } from "@/lib/types";
 import type { AppliedFeedbackTrace } from "@/lib/review-types";
 import type {
@@ -38,6 +39,27 @@ function scoreColor(score: number) {
   if (score >= 70) return "text-green-400";
   if (score >= 50) return "text-amber-400";
   return "text-red-400";
+}
+
+function DownloadIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      className="shrink-0"
+    >
+      <path
+        d="M8 2.5v6.25M5.5 6.75 8 9.25l2.5-2.5M3 11.25h10"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }
 
 interface PlanViewData {
@@ -111,20 +133,52 @@ export default function PlanPage({
     );
   }
 
-  const { plan, critic, qc, planningBrief, workflowVersion, qualityNote, appliedFeedback, runError } = data;
+  const { hypothesis, plan, critic, qc, planningBrief, workflowVersion, qualityNote, appliedFeedback, runError } = data;
   const isLegacy = workflowVersion === "legacy_preview";
+
+  function handleExportPlan() {
+    const markdown = buildPlanExportMarkdown({
+      hypothesis,
+      plan,
+      planningBrief,
+      qc,
+      critic,
+      qualityNote,
+      appliedFeedback,
+    });
+
+    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = buildPlanExportFilename(plan);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <div className="min-h-screen">
       {/* Pinned plan header */}
       <div className="sticky top-0 z-10 bg-white border-b border-[#E2E8F0] px-6 py-4">
         <div className="max-w-4xl mx-auto">
-          <h1
-            className="font-bold text-[#111827] text-base truncate"
-            style={{ fontFamily: "var(--font-serif)", letterSpacing: "-0.02em" }}
-          >
-            {plan.title}
-          </h1>
+          <div className="flex items-start justify-between gap-4">
+            <h1
+              className="font-bold text-[#111827] text-base truncate min-w-0"
+              style={{ fontFamily: "var(--font-serif)", letterSpacing: "-0.02em" }}
+            >
+              {plan.title}
+            </h1>
+            <button
+              type="button"
+              onClick={handleExportPlan}
+              className="inline-flex items-center gap-2 shrink-0 px-3 py-2 rounded-full border border-[#CBD5E1] bg-[#F8FAFC] text-[#334155] text-sm font-mono hover:border-[#0D9488] hover:text-[#0D9488] transition-colors"
+            >
+              <DownloadIcon />
+              <span>Export plan</span>
+            </button>
+          </div>
           <div className="flex flex-wrap items-center gap-3 mt-1.5">
             {qc ? (
               <>

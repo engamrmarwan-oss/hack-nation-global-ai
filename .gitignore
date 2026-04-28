@@ -74,3 +74,4 @@ logs/
 tmp/
 temp/
 tsconfig.tsbuildinfo
+.vercel
