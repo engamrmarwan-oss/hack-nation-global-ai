@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useRef, useState, use } from "react";
 import Link from "next/link";
 import { FailureModesPanel } from "@/components/failure-modes-panel";
 import { HelpInfoButton } from "@/components/help-info-button";
@@ -13,7 +13,13 @@ import { SourcesTab } from "@/components/tabs/sources-tab";
 import { TimelineTab } from "@/components/tabs/timeline-tab";
 import { ValidationTab } from "@/components/tabs/validation-tab";
 import { getNoveltyProvenance, getStatusMeaning } from "@/lib/help-content";
-import { buildPlanExportFilename, buildPlanExportMarkdown } from "@/lib/plan-export";
+import {
+  buildPlanExportExcel,
+  buildPlanExportFilename,
+  buildPlanExportJson,
+  buildPlanExportMarkdown,
+  buildPlanExportPrintHtml,
+} from "@/lib/plan-export";
 import type { ExperimentDetailResponse, ExperimentPlan } from "@/lib/types";
 import type { AppliedFeedbackTrace } from "@/lib/review-types";
 import type {
@@ -62,6 +68,27 @@ function DownloadIcon() {
   );
 }
 
+function ChevronDownIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+    >
+      <path
+        d="m3 4.5 3 3 3-3"
+        stroke="currentColor"
+        strokeWidth="1.35"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 interface PlanViewData {
   hypothesis: string;
   qc: LiteratureQcSummary | null;
@@ -84,6 +111,8 @@ export default function PlanPage({
   const [activeTab, setActiveTab] = useState<TabKey>("protocol");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     fetch(`/api/experiments/${id}`, { cache: "no-store" })
@@ -114,6 +143,23 @@ export default function PlanPage({
       });
   }, [id]);
 
+  useEffect(() => {
+    if (!exportMenuOpen) {
+      return;
+    }
+
+    function handlePointerDown(event: MouseEvent) {
+      if (!exportMenuRef.current?.contains(event.target as Node)) {
+        setExportMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+    };
+  }, [exportMenuOpen]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -136,8 +182,20 @@ export default function PlanPage({
   const { hypothesis, plan, critic, qc, planningBrief, workflowVersion, qualityNote, appliedFeedback, runError } = data;
   const isLegacy = workflowVersion === "legacy_preview";
 
-  function handleExportPlan() {
-    const markdown = buildPlanExportMarkdown({
+  function downloadBlob(contents: string, mimeType: string, filename: string) {
+    const blob = new Blob([contents], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  function getExportPayload() {
+    return {
       hypothesis,
       plan,
       planningBrief,
@@ -145,17 +203,55 @@ export default function PlanPage({
       critic,
       qualityNote,
       appliedFeedback,
-    });
+    };
+  }
 
-    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = buildPlanExportFilename(plan);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  function handleExportMarkdown() {
+    downloadBlob(
+      buildPlanExportMarkdown(getExportPayload()),
+      "text/markdown;charset=utf-8",
+      buildPlanExportFilename(plan, "md"),
+    );
+    setExportMenuOpen(false);
+  }
+
+  function handleExportJson() {
+    downloadBlob(
+      buildPlanExportJson(getExportPayload()),
+      "application/json;charset=utf-8",
+      buildPlanExportFilename(plan, "json"),
+    );
+    setExportMenuOpen(false);
+  }
+
+  function handleExportExcel() {
+    downloadBlob(
+      buildPlanExportExcel(getExportPayload()),
+      "application/vnd.ms-excel;charset=utf-8",
+      buildPlanExportFilename(plan, "xls"),
+    );
+    setExportMenuOpen(false);
+  }
+
+  function handleExportPdf() {
+    const html = buildPlanExportPrintHtml(getExportPayload());
+    const printWindow = window.open("", "_blank", "noopener,noreferrer");
+
+    if (!printWindow) {
+      setError("Pop-up blocked — allow pop-ups to export this plan as PDF.");
+      setExportMenuOpen(false);
+      return;
+    }
+
+    printWindow.document.open();
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.document.title = buildPlanExportFilename(plan, "pdf");
+    printWindow.focus();
+    window.setTimeout(() => {
+      printWindow.print();
+    }, 250);
+    setExportMenuOpen(false);
   }
 
   return (
@@ -170,14 +266,52 @@ export default function PlanPage({
             >
               {plan.title}
             </h1>
-            <button
-              type="button"
-              onClick={handleExportPlan}
-              className="inline-flex items-center gap-2 shrink-0 px-3 py-2 rounded-full border border-[#CBD5E1] bg-[#F8FAFC] text-[#334155] text-sm font-mono hover:border-[#0D9488] hover:text-[#0D9488] transition-colors"
-            >
-              <DownloadIcon />
-              <span>Export plan</span>
-            </button>
+            <div ref={exportMenuRef} className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => setExportMenuOpen((open) => !open)}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-[#CBD5E1] bg-[#F8FAFC] text-[#334155] text-sm font-mono hover:border-[#0D9488] hover:text-[#0D9488] transition-colors"
+                aria-haspopup="menu"
+                aria-expanded={exportMenuOpen}
+              >
+                <DownloadIcon />
+                <span>Export</span>
+                <ChevronDownIcon open={exportMenuOpen} />
+              </button>
+
+              {exportMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-[#CBD5E1] bg-white shadow-lg overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={handleExportExcel}
+                    className="block w-full px-4 py-3 text-left text-sm font-mono text-[#334155] hover:bg-[#F8FAFC]"
+                  >
+                    Export as Excel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleExportPdf}
+                    className="block w-full px-4 py-3 text-left text-sm font-mono text-[#334155] hover:bg-[#F8FAFC]"
+                  >
+                    Export as PDF
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleExportJson}
+                    className="block w-full px-4 py-3 text-left text-sm font-mono text-[#334155] hover:bg-[#F8FAFC]"
+                  >
+                    Export as JSON
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleExportMarkdown}
+                    className="block w-full px-4 py-3 text-left text-sm font-mono text-[#334155] hover:bg-[#F8FAFC]"
+                  >
+                    Export as Markdown
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-3 mt-1.5">
             {qc ? (
